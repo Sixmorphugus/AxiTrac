@@ -38,8 +38,12 @@ void setup() {
   pinMode(ledPin2, OUTPUT);
   pinMode(ledPin3, OUTPUT);
   pinMode(boardLed, OUTPUT);
+  
   // initialize the pushbutton pin as an input:
   pinMode(buttonPin, INPUT);
+
+  // initialize serial
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -52,4 +56,7 @@ void loop() {
   digitalWrite(ledPin1, buttonState > 100 ? HIGH : LOW);
   digitalWrite(ledPin2, buttonState > 200 ? HIGH : LOW);
   digitalWrite(ledPin3, buttonState > 300 ? HIGH : LOW);
+
+  Serial.print(buttonState);
+  Serial.print("|");
 }
