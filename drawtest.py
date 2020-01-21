@@ -39,13 +39,9 @@ ad.options.accel = 100
 ad.options.model = 1
 ad.update()
 
-for i in range(50):
-    ad.penup()
-    ad.pendown()
-
-#do_move_benchmark(ad, 11.81, 0, 50)
-#do_move_benchmark(ad, 0,  8.58, 50)
-#do_move_benchmark(ad, 11.81, 8.58, 50)
+#do_move_benchmark(ad, 11.81, 0, 5)
+#do_move_benchmark(ad, 0,  8.58, 5)
+do_move_benchmark(ad, 11.81, 8.58, 5)
 
 print("Disconnecting")
 

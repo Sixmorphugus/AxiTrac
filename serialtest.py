@@ -1,5 +1,6 @@
 import serial
 from pyaxidraw import axidraw
+import time
 
 # connect to Arduino
 ser = serial.Serial("COM4", 9600)
