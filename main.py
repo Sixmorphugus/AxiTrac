@@ -32,9 +32,27 @@ def receive_serial_async():
 
     return lastOutput
 
+def send_serial(light1state, light2state):
+    # Make a bit field for this since it's booleans.
+    # bit 1 = light 1, bit 2 = light 2
+    byte = 0
+
+    if(light2state):
+        byte += 2
+
+    if(light1state):
+        byte += 1
+
+    send = bytes([byte])
+
+    ser.write(send)
+
+# Waits for the given button to be pressed
 def await_press(button):
     startTime = time.time()
     tolerence = 30.0
+
+    send_serial(button != 1, button == 1)
     
     while True:
         serialIn = receive_serial_async()
@@ -45,8 +63,10 @@ def await_press(button):
             serialInPressure = int(serialInParts[button])
 
             if(serialInPressure > tolerence):
+                send_serial(False, False)
                 return serialInPressure, time.time() - startTime
 
+# Returns the current value of the given button + whether it is over the press threshold
 def poll_press(button):
     tolerence = 30.0
 
@@ -59,6 +79,7 @@ def poll_press(button):
 
     return serialInPressure, serialInPressure > tolerence
 
+# Writes a 1d array to a CSV file as comma seperated values
 def write_csv_row(file, row):
     for i in range(len(row)):
         if i != 0:
@@ -134,6 +155,9 @@ while True:
 
                 print("Finish reading took", timeToStop, "pressure", recordedPressureForStop)
 
+                # Reset after 1 second
+                time.sleep(1)
+
                 ad.goto(0, 0)
 
                 # Record the result in outFile
@@ -171,6 +195,8 @@ while True:
                 steps = 20
                 buttonHit = False
 
+                send_serial(False, True)
+
                 while True:
                     for j in range(steps):
                         ad.lineto((11.81 / steps) * (j+1), 0)
@@ -200,9 +226,11 @@ while True:
                     if buttonHit:
                         break
 
+                send_serial(False, False)
+
                 print("Finish reading took", timeToStop, "pressure", recordedPressureForStop)
 
-                # Reset after 2 seconds
+                # Reset after 1 second
                 time.sleep(1)
                 
                 # Move it back

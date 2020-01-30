@@ -8,16 +8,22 @@ const int buttonPin1 = A0; // the number of the first pushbutton pin
 const int buttonPin2 = A1; // the number of the second pushbutton pin
 const int ledPin1 =  2;    // the number of the LED pin
 const int ledPin2 =  3;    // the number of the LED pin
+const int ledPin3 =  4;    // the number of the LED pin
+const int ledPin4 =  5;    // the number of the LED pin
 const int boardLed = 13;   // useful to record this
 
 // variables will change:
 int button1State = 0;      // variable for reading the first pressure sensor status
 int button2State = 0;      // variable for reading the second pressure sensor status
 
+int serialByte = 0;
+
 void setup() {
   // initialize the LED pin as an output:
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  pinMode(ledPin4, OUTPUT);
   pinMode(boardLed, OUTPUT);
   
   // initialize the pushbutton pin as an input:
@@ -37,6 +43,13 @@ void loop() {
   // turn LED on:`
   digitalWrite(ledPin1, button1State > 100 ? HIGH : LOW);
   digitalWrite(ledPin2, button2State > 100 ? HIGH : LOW);
+
+  if (Serial.available() > 0) {
+    int serialByte = Serial.read();
+
+    digitalWrite(ledPin3, serialByte & 1);
+    digitalWrite(ledPin4, serialByte & 2);
+  }
 
   Serial.print(button1State);
   Serial.print("&");
