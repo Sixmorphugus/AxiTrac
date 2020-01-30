@@ -1,10 +1,10 @@
-#Setup
+# Setup
 
-#Running Experiments
+# Running Experiments
 
-#About the Programs
+# About the Programs
 
-#About the AxiDraw
+# About the AxiDraw
 The API is quite simple to use and has a small number of functions.
 - It has two modes: plot & interactive. I have been working in interactive mode as this is the mode that allows direct control of an AxiDraw device.
 - The API allows you to change several options:
