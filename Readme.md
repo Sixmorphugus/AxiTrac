@@ -20,8 +20,30 @@ All speeds in the configuration file are relative to the maximum speeds the AxiD
 3. The setting we want is near the end of the file, though you are welcome to adjust the others: it is `speed_lim_xy_hr`. Change this setting to `17.3958` (at most), and ignore the text telling you not to do that. We do not need the precision that this loses us; we are not drawing.
 4. Run the program to check that it got faster.
 
-## Breadboard Information
+## Advanced Physical Setup Information
+The device should already be set up - this information covers how to create a new testbed.
+
 ### Parts
+- 1x AxiDraw v3
+- 1x Breadboard
+- 1x Auduino
+- 2x Pressure Sensor
+- 4x LED (or 2, if you don't need indicators for testing the pressure sensors)
+- 2x pull-down resistor (One per pressure sensor, resistance of 4700 preferred)
+- 1x Micro-USB cable (for Axi)
+- 1x USB Type B cable (for Auduino)
+- 1x Power Cable (for Axi)
+- A lot of wires and sellotape
+
+### Wiring Configuration
+I will keep this vauge to allow for relatively free use of the breadboard. Thus, some previous experience of working with breadboards and switches is assumed.
+1. Wire the first pressure sensor to A0. This will be button A.
+2. Wire the second pressure sensor to A1. This will be button B.
+3. Use pull-down resistors to make the sensors work (you can find guides on this elsewhere).
+4. (Optional) if you want an indication of whether buttons A and B work, you can wire an LED to digital output 3 to test button A, and to digital output 4 to test button 4.
+5. Wire 2 more LEDs to digital outputs 5 and 6. These will be our action indicator lights, A and B.
+
+Ensure that everything is wired to ground where neccesary. I realise that telling an electronic engineer this is like telling a BASE jumper "Make sure to open your parachute before you hit the ground". You will probably be fine.
 
 # Running Experiments
 Experiments are run via selecting a `.csv` (Comma Seperated Values) configuration file with correctly formatted lines, where each line represents one experiment run repeatedly with the same parameters. The parameter format changes depending on the first value on each line, which selects which experiment to perform.
@@ -34,9 +56,9 @@ Fitt's Law Validation experiments always start with a 1 in their line in the CSV
 
 The logic for running this experiment is that
 - For the number of readings to take, repeatedly:
-    - Wait for a press of button A, record pressure and time to hit in the results
+    - Wait for a press of button A (causing action light A to come on), record pressure and time to hit in the results
     - Move to the position given in the configuration.
-    - Wait for a press of B once movement has finished; record pressure and time to hit.
+    - Wait for a press of button B (causing action light B to come on) once movement has finished; record pressure and time to hit.
     - Record both readings in a new line in the `.csv_result` file.
     - Return to the home position.
 
@@ -48,9 +70,9 @@ Moving Target experiments always start with a 2 in their line in the CSV file. T
 ```2, [X Speed], [No. Readings]```
 
 - For the number of readings to take, repeatedly:
-    - Wait for a press of button A, record pressure and time to hit in the results
+    - Wait for a press of button A (causing action light A to come on), record pressure and time to hit in the results
     - Begin moving back and forth at the speed specified in the configuration.
-    - Wait for a press of B; record pressure and time to hit. Stop moving when touched.
+    - Wait for a press of button B (causing action light B to come on); record pressure and time to hit. Stop moving when touched.
     - Record both readings in a new line in the `.csv_result` file.
     - Return to the home position.
 
@@ -59,6 +81,16 @@ The output format is:
 
 # About the Programs
 ## Auduino
+The Audrino program is very simple and establishes the first half of a very simple communication protocol. It does not control anything that the Axi is doing. Its job is:
+- Send, over serial, a string containing:
+    - A floating point number indicating the current pressure of button A.
+    - An ampersand (&)
+    - A floating point number indicating the current pressure of button B.
+    - A pipe (|)
+- Receive, over serial, and apply a single byte containing:
+    - State for action light A (stored in the bit indicating "1")
+    - State for action light B (stored in the bit indicating "2")
+    
 ## AxiDraw
 
 # About the AxiDraw
