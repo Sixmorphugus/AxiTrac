@@ -1,8 +1,47 @@
 # Setup
+## Physical Setup
+
+## Breadboard Information
+
+## Modifying PyAxiDraw to allow for faster speed
 
 # Running Experiments
+Experiments are run via selecting a `.csv` (Comma Seperated Values) configuration file with correctly formatted lines, where each line represents one experiment run repeatedly with the same parameters. The parameter format changes depending on the first value on each line, which selects which experiment to perform.
+
+All experiments output values to the `.csv_result` file. The meaning of these readings varies depending on the selected experiment but all of them start with the experiment type, the experiment number, and the reading number.
+
+## Fitt's Law Validation [1]
+Fitt's Law Validation experiments always start with a 1 in their line in the CSV file. The format for a Fitts Law Validation experiment is therefore thus:
+```1, [X Position To Move To], [No. Readings]```
+
+The logic for running this experiment is that
+- For the number of readings to take, repeatedly:
+    - Wait for a press of button A, record pressure and time to hit in the results
+    - Move to the position given in the configuration.
+    - Wait for a press of B once movement has finished; record pressure and time to hit.
+    - Record both readings in a new line in the `.csv_result` file.
+    - Return to the home position.
+
+The output format is:
+```1, [Experiment Number], [Reading Number], [Recorded Pressure For Start], [Time Taken To Start], [Recorded Pressure For Stop, [Time Taken To Stop]```
+
+## Moving Target [2]
+Moving Target experiments always start with a 2 in their line in the CSV file. The format for a Moving Target experiment is therefore thus:
+```2, [X Speed], [No. Readings]```
+
+- For the number of readings to take, repeatedly:
+    - Wait for a press of button A, record pressure and time to hit in the results
+    - Begin moving back and forth at the speed specified in the configuration.
+    - Wait for a press of B; record pressure and time to hit. Stop moving when touched.
+    - Record both readings in a new line in the `.csv_result` file.
+    - Return to the home position.
+
+The output format is:
+```2, [Experiment Number], [Reading Number], [Recorded Pressure For Start], [Time Taken To Start], [Recorded Pressure For Stop, [Time Taken To Stop, Approximate Axis Position On Touch]```
 
 # About the Programs
+## Auduino
+## AxiDraw
 
 # About the AxiDraw
 The API is quite simple to use and has a small number of functions.
@@ -27,3 +66,4 @@ The API is quite simple to use and has a small number of functions.
 - If a program exits with the device in the wrong state, you will need to unplug it from your computer before physically resetting it to the correct position, as having it plugged into a machine with its driver installed locks it in place.
 - If you accidentally send a bad command like move with 1 speed to the other side of the work area (which can take several minutes) you will need to unplug both the computer and power connection to reset the device. If you unplug only the computer, the device will continue running the command, and if you unplug only the device, the driver will resend the bad command as soon as power returns.
 - The AxiDraw, contrary to what might seem to be happening, does NOT have any kind of motor in its moving segment. Both motors are either end of the device - one is X+Y, and one is X-Y. If you pull the driver belt in one direction on both sides of the moving segment, the head will move on the X axis. If you pull the driver belt in opposite directions, it will move on the Y axis.
+- The AxiDraw stepper motors' maximum speed is only slightly higher than what the software allows by default: 25.
