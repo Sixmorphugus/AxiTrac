@@ -1,9 +1,27 @@
 # Setup
-## Physical Setup
+## Software Setup
+1. Install the core AxiDraw drivers: https://wiki.evilmadscientist.com/Axidraw_Software_Installation
+2. Grab the PyAxiDraw software and drivers from here and follow the setup instructions: https://axidraw.com/doc/py_api/#about-axidraw
+3. Grab the Auduino IDE: https://www.arduino.cc/en/main/software (Ideally don't get the new windows app)
 
-## Breadboard Information
+## Physical Setup
+1. Plug the AxiDraw into the wall (the stepper motors need mains power to run) and also into your own machine via micro USB.
+2. Plug the Auduino into your own machine. It doesn't need mains power.
+3. If any wires are disconnected, please refer to the Breadboard Information section for how everything should be plugged in. Also refer to this information if starting from scratch with a new AxiDraw, Breadboard and Auduino.
+
+## Getting up and running
+1. First of all, flash the Auduino with the Arduino program enclosed (main.ino). This gives us our indicator lights, and our pressure sensors.
+2. Run the main.py file.
 
 ## Modifying PyAxiDraw to allow for faster speed
+All speeds in the configuration file are relative to the maximum speeds the AxiDraw control software allows. Thus, you can allow faster speed by modifying PyAxiDraw's own files:
+1. First you need to know where `pip` installed the Python library. It's always inside your Python directory, which is (usually) at `%LocalAppData%\Programs\Python\Python[Version]` on windows. The AppData folder is usually hidden from view on Windows, but typing the previous string into the address bar of the file manager usually works. Within this directory, go to `Lib\site-packages` (which is where `pip` usually puts its files) and open the `pyaxidraw` folder.
+2. Open `axidraw_conf.py`. You will see a lot of settings.
+3. The setting we want is near the end of the file, though you are welcome to adjust the others: it is `speed_lim_xy_hr`. Change this setting to `17.3958` (at most), and ignore the text telling you not to do that. We do not need the precision that this loses us; we are not drawing.
+4. Run the program to check that it got faster.
+
+## Breadboard Information
+### Parts
 
 # Running Experiments
 Experiments are run via selecting a `.csv` (Comma Seperated Values) configuration file with correctly formatted lines, where each line represents one experiment run repeatedly with the same parameters. The parameter format changes depending on the first value on each line, which selects which experiment to perform.
@@ -66,4 +84,4 @@ The API is quite simple to use and has a small number of functions.
 - If a program exits with the device in the wrong state, you will need to unplug it from your computer before physically resetting it to the correct position, as having it plugged into a machine with its driver installed locks it in place.
 - If you accidentally send a bad command like move with 1 speed to the other side of the work area (which can take several minutes) you will need to unplug both the computer and power connection to reset the device. If you unplug only the computer, the device will continue running the command, and if you unplug only the device, the driver will resend the bad command as soon as power returns.
 - The AxiDraw, contrary to what might seem to be happening, does NOT have any kind of motor in its moving segment. Both motors are either end of the device - one is X+Y, and one is X-Y. If you pull the driver belt in one direction on both sides of the moving segment, the head will move on the X axis. If you pull the driver belt in opposite directions, it will move on the Y axis.
-- The AxiDraw stepper motors' maximum speed is only slightly higher than what the software allows by default: 25.
+- The AxiDraw stepper motors' maximum speed is only slightly higher than what the software allows by default: 25kHz.
