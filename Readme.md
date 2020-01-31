@@ -40,8 +40,8 @@ I will keep this vauge to allow for relatively free use of the breadboard. Thus,
 1. Wire the first pressure sensor to A0. This will be button A.
 2. Wire the second pressure sensor to A1. This will be button B.
 3. Use pull-down resistors to make the sensors work (you can find guides on this elsewhere).
-4. (Optional) if you want an indication of whether buttons A and B work, you can wire an LED to digital output 3 to test button A, and to digital output 4 to test button 4.
-5. Wire 2 more LEDs to digital outputs 5 and 6. These will be our action indicator lights, A and B.
+4. (Optional) if you want an indication of whether buttons A and B work, you can wire an LED to digital output 2 to test button A, and to digital output 3 to test button 4.
+5. Wire 2 more LEDs to digital outputs 4 and 5. These will be our action indicator lights, A and B.
 
 Ensure that everything is wired to ground where neccesary. I realise that telling an electronic engineer this is like telling a BASE jumper "Make sure to open your parachute before you hit the ground". You will probably be fine.
 
