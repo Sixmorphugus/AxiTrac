@@ -28,7 +28,7 @@ The device should already be set up - this information covers how to create a ne
 - 1x Breadboard
 - 1x Auduino
 - 2x Pressure Sensor
-- 4x LED (or 2, if you don't need indicators for testing the pressure sensors)
+- 9x LED (or 2, if you don't need indicators for testing the pressure sensors or speed)
 - 2x pull-down resistor (One per pressure sensor, resistance of 4700 preferred)
 - 1x Micro-USB cable (for Axi)
 - 1x USB Type B cable (for Auduino)
@@ -40,8 +40,9 @@ I will keep this vauge to allow for relatively free use of the breadboard. Thus,
 1. Wire the first pressure sensor to A0. This will be button A.
 2. Wire the second pressure sensor to A1. This will be button B.
 3. Use pull-down resistors to make the sensors work (you can find guides on this elsewhere).
-4. (Optional) if you want an indication of whether buttons A and B work, you can wire an LED to digital output 2 to test button A, and to digital output 3 to test button 4.
+4. (Optional) If you want an indication of whether buttons A and B work, you can wire an LED to digital output 2 to test button A, and to digital output 3 to test button 4.
 5. Wire 2 more LEDs to digital outputs 4 and 5. These will be our action indicator lights, A and B.
+6. (Optional) If you want speed indication for the next experiment while evaluating moving targets, wire 5 more LEDs in a row to digital outputs 8-12. These are our speed indicator lights.
 
 Ensure that everything is wired to ground where neccesary. I realise that telling an electronic engineer this is like telling a BASE jumper "Make sure to open your parachute before you hit the ground". You will probably be fine.
 
